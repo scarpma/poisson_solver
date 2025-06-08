@@ -108,18 +108,31 @@ program poisson
            maxerr = abs(Uold(i,j) - U(i,j))
         end if
 
-        ! optional Neumann o(a^2) along x==1 and x==n
+        ! optional Neumann o(a^2) along x [y==1 and y==N] dUdy=0
         if (BC.eq."N") then
-          write(*,*)'Neumann B.C. not implemented. Stopping'
-          call exit(-1)
+          U(i,1) = 4.0_dp/3.0_dp * U(i,2) - 1.0_dp/3.0_dp * U(i,3)
+          U(i,N) = 4.0_dp/3.0_dp * U(i,N-1) - 1.0_dp/3.0_dp * U(i,N-2)
         endif
-   
+
       end do
 
-      ! optional Neumann o(a^2) along y==1 and y==n
+      ! optional Neumann o(a^2) along y [x==1 and x==N] dUdx=0
       if (BC.eq."N") then
-          write(*,*)'Neumann B.C. not implemented. Stopping'
-          call exit(-1)
+        U(1,j) = 4.0_dp/3.0_dp * U(2,j) - 1.0_dp/3.0_dp * U(3,j)
+        U(N,j) = 4.0_dp/3.0_dp * U(N-1,j) - 1.0_dp/3.0_dp * U(N-2,j)
+        ! box corners (dudx+dudy=0)
+        U(1,1) = 0.5_dp * (&
+          4.0_dp/3.0_dp * U(2,1) - 1.0_dp/3.0_dp * U(3,1) + &
+          4.0_dp/3.0_dp * U(1,2) - 1.0_dp/3.0_dp * U(1,3))
+        U(1,N) = 0.5_dp * (&
+          4.0_dp/3.0_dp * U(2,N) - 1.0_dp/3.0_dp * U(3,N) + &
+          4.0_dp/3.0_dp * U(1,N-1) - 1.0_dp/3.0_dp * U(1,N-2))
+        U(N,N) = 0.5_dp * (&
+          4.0_dp/3.0_dp * U(N-1,N) - 1.0_dp/3.0_dp * U(N-2,N) + &
+          4.0_dp/3.0_dp * U(N,N-1) - 1.0_dp/3.0_dp * U(N,N-2))
+        U(N,1) = 0.5_dp * (&
+          4.0_dp/3.0_dp * U(N-1,1) - 1.0_dp/3.0_dp * U(N-2,1) + &
+          4.0_dp/3.0_dp * U(N,2) - 1.0_dp/3.0_dp * U(N,3))
       endif
     end do
  
