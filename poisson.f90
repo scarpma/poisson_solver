@@ -99,14 +99,14 @@ program poisson
         case("G")
           U(i,j) = (U(i-1,j) + Uold(i+1,j) + U(i,j-1) + Uold(i,j+1))/4.0_dp
         end select
+
+        ! relaxation factor w
+        U(i,j) = (1-w)*Uold(i,j) + w*U(i,j)
         
         ! check covergence
         if (abs(Uold(i,j)-U(i,j)) > maxerr ) then
            maxerr = abs(Uold(i,j) - U(i,j))
         end if
-      
-        ! relaxation factor w
-        U(i,j) = (1-w)*Uold(i,j) + w*U(i,j)
 
         ! optional Neumann o(a^2) along x==1 and x==n
         if (BC.eq."N") then
