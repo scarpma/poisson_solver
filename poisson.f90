@@ -97,8 +97,7 @@ program poisson
         case("J")
           U(i,j) = (Uold(i-1,j) + Uold(i+1,j) + Uold(i,j-1) + Uold(i,j+1))/4.0_dp
         case("G")
-          write(*,*)'Gauss-Siedel not implemented. Stopping'
-          call exit(-1)
+          U(i,j) = (U(i-1,j) + Uold(i+1,j) + U(i,j-1) + Uold(i,j+1))/4.0_dp
         end select
         
         ! check covergence
