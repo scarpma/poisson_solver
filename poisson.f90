@@ -110,16 +110,20 @@ program poisson
 
         ! optional Neumann o(a^2) along x==1 and x==n
         if (BC.eq."N") then
-          write(*,*)'Neumann B.C. not implemented. Stopping'
-          call exit(-1)
+          U(1,j) = 4.0_dp/3.0_dp * U(2,j) - 1.0_dp/3.0_dp * U(3,j)
+          U(N,j) = 4.0_dp/3.0_dp * U(N-1,j) - 1.0_dp/3.0_dp * U(N-2,j)
+          U(1,1) = 4.0_dp/3.0_dp * U(2,1) - 1.0_dp/3.0_dp * U(3,1)
+          U(N,N) = 4.0_dp/3.0_dp * U(N-1,N) - 1.0_dp/3.0_dp * U(N-2,N)
         endif
    
       end do
 
       ! optional Neumann o(a^2) along y==1 and y==n
       if (BC.eq."N") then
-          write(*,*)'Neumann B.C. not implemented. Stopping'
-          call exit(-1)
+        U(1:N/2-11,1) = 4.0_dp/3.0_dp * U(1:N/2-11,2) - 1.0_dp/3.0_dp * U(1:N/2-11,3)
+        U(N/2+11:N,1) = 4.0_dp/3.0_dp * U(N/2+11:N,2) - 1.0_dp/3.0_dp * U(N/2+11:N,3)
+        U(1:N/2-11,N) = 4.0_dp/3.0_dp * U(1:N/2-11,N-1) - 1.0_dp/3.0_dp * U(1:N/2-11,N-2)
+        U(N/2+11:N,N) = 4.0_dp/3.0_dp * U(N/2+11:N,N-1) - 1.0_dp/3.0_dp * U(N/2+11:N,N-2)
       endif
     end do
  
